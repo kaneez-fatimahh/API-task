@@ -2,6 +2,7 @@ let container = document.getElementById("container");
 let row = document.getElementById("row");
 let divrow = document.getElementById("div-row");
 let data;
+
 //Fetch Post API
 
 const fetchData = async () => {
@@ -19,14 +20,13 @@ const fetchData = async () => {
   }
 };
 fetchData();
+
 let getAllBlogCategories = (data) => {
   let array = [];
   data.forEach((element) => {
-    let ab = element.blog_category;
-    console.log(ab);
-    array.push(ab);
-
-    // console.log(element.blog_category)
+    let blog_category = element.blog_category;
+    console.log(blog_category);
+    array.push(blog_category);
   });
   let arraysort = array.sort();
   const finalArray = arraysort.filter(
@@ -36,27 +36,25 @@ let getAllBlogCategories = (data) => {
   console.log(finalArray);
   finalArray.forEach((element) => {
     let blogCategoryName = document.createElement("div");
-    // blogCategoryName.addEventListener("click",()=> displayCategory(element));
-    // blogCategoryName.innerHTML = element;
-    blogCategoryName.classList.add("col-4");
-    blogCategoryName.innerHTML = ` <button type="button" class="btn btn-primary" onclick="displayCategory('${element}')">${element}</button>
+    blogCategoryName.classList.add("col-lg-3","col-md-6","col-sm-6","my-3");
+    blogCategoryName.innerHTML = `
+    <button type="button" class="btn btn-primary" onclick="displayCategory('${element}')">${element}</button>
   `;
-    row.appendChild(blogCategoryName);
-  });
-};
-//default
-// let defaultData = data.filter((e) => e.blog_category === "Beginners Guide")
-// if (defaultData) {
-//   divrow.innerHTML = ""
-//   displayCategory("Beginners Guide")
+  row.appendChild(blogCategoryName);
 
-// }
-// let allBlogResultss = data.filter((e) => e.blog_category === "Beginners Guide");
-// console.log(allBlogResultss)
+  
+  });
+//get all category button
+let getALLCategoriesButton = document.createElement("div");
+getALLCategoriesButton.classList.add("col-lg-3","col-md-6","col-sm-6","my-3");
+getALLCategoriesButton.innerHTML = `
+<button type="button" class="btn btn-primary" onclick="displayAllCategories(data)">Get All Categories</button>
+`;
+    row.appendChild(getALLCategoriesButton);
+};
+//display default-category
 
 function displayDefaultCategory(data) {
-  // console.log(elementBlog)
-
   let allBlogResultss = data.filter(
     (e) => e.blog_category === "Beginners Guide"
   );
@@ -64,25 +62,28 @@ function displayDefaultCategory(data) {
   divrow.innerHTML = "";
   allBlogResultss.forEach((e) => {
     console.log(e);
-
     let displayDiv = document.createElement("div");
     displayDiv.classList.add(
       "col-lg-4",
-      "col-md-4",
+      "col-md-6",
       "col-sm-12",
       "text-center",
       "my-4"
     );
+  
     displayDiv.innerHTML = `<div>
-      <img src="${e.feature_image}" alt=""  style="max-width: 100%;">
-      <p></p>
-      <h6>${e.title}</h6>
-    </div>`;
+    <div class="card mx-auto" style="width: 18rem;">
+    <img src="${e.feature_image}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h6 class="card-title">${e.title}</h6>
+    </div>`
+  ;
 
     divrow.appendChild(displayDiv);
   });
 }
 
+//display clicked-category
 function displayCategory(elementBlog) {
   console.log(elementBlog);
 
@@ -95,17 +96,45 @@ function displayCategory(elementBlog) {
     let displayDiv = document.createElement("div");
     displayDiv.classList.add(
       "col-lg-4",
-      "col-md-4",
+      "col-md-6",
       "col-sm-12",
       "text-center",
       "my-4"
     );
     displayDiv.innerHTML = `<div>
-        <img src="${e.feature_image}" alt=""  style="max-width: 100%;">
-        <p></p>
-        <h6>${e.title}</h6>
-      </div>`;
+    <div class="card mx-auto" style="width: 18rem;">
+    <img src="${e.feature_image}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h6 class="card-title">${e.title}</h6>
+    </div>`
+  ;
 
     divrow.appendChild(displayDiv);
   });
+}
+//display all categories
+
+ let displayAllCategories = (data)=>{
+  const uniqueValues = data.filter((value, index, self) => self.indexOf(value) === index);
+  console.log(uniqueValues)
+  divrow.innerHTML = ""
+  uniqueValues.forEach((element) => {
+  let displayDiv = document.createElement("div");
+  displayDiv.classList.add(
+    "col-lg-4",
+    "col-md-6",
+    "col-sm-12",
+    "text-center",
+    "my-4"
+  );
+  displayDiv.innerHTML = `<div>
+  <div class="card mx-auto" style="width: 18rem;">
+  <img src="${element.feature_image}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h6 class="card-title">${element.title}</h6>
+  </div>`
+;
+divrow.appendChild(displayDiv);
+
+})
 }
